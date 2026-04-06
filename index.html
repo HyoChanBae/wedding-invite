@@ -63,7 +63,28 @@
       margin: 0 auto;
       min-height: 100vh;
       position: relative;
-      padding-bottom: 96px;
+      padding: 0 18px 96px;
+    }
+
+    .app::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: min(calc(100vw - 24px), calc(var(--max) + 36px));
+      transform: translateX(-50%);
+      background: rgba(255, 252, 254, 0.78);
+      border-left: 1px solid rgba(140, 130, 136, 0.2);
+      border-right: 1px solid rgba(140, 130, 136, 0.2);
+      box-shadow: 0 10px 30px rgba(98, 74, 84, 0.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app > * {
+      position: relative;
+      z-index: 1;
     }
 
     .floating-audio {
@@ -239,11 +260,11 @@
 
     .hero-card {
       overflow: hidden;
-      border-radius: 32px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 235, 242, 0.75);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      border: none;
     }
 
     .hero-image-wrap {
@@ -307,16 +328,20 @@
     }
 
     section {
-      padding: 14px 16px;
+      padding: 34px 0 0;
+    }
+
+    section:first-of-type {
+      padding-top: 16px;
     }
 
     .section-card {
-      padding: 26px 20px;
-      border-radius: var(--radius-xl);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 235, 242, 0.75);
-      backdrop-filter: blur(10px);
+      padding: 0 14px;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+      backdrop-filter: none;
     }
 
     .section-label {
