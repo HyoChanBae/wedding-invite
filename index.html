@@ -82,32 +82,155 @@
       cursor: pointer;
     }
 
-    .top-nav {
-      position: sticky;
+    .nav-toggle {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 100;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 0;
+      border-radius: 14px;
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-toggle:hover {
+      background: rgba(255, 252, 254, 0.98);
+    }
+
+    .nav-toggle:focus-visible {
+      outline: 2px solid var(--point);
+      outline-offset: 2px;
+    }
+
+    .nav-toggle-bars {
+      position: relative;
+      width: 22px;
+      height: 16px;
+      display: block;
+    }
+
+    .nav-toggle-bars span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.25s ease,
+        top 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-toggle-bars span:nth-child(1) {
       top: 0;
-      z-index: 40;
+    }
+
+    .nav-toggle-bars span:nth-child(2) {
+      top: 7px;
+    }
+
+    .nav-toggle-bars span:nth-child(3) {
+      top: 14px;
+    }
+
+    .nav-toggle.is-open .nav-toggle-bars span:nth-child(1) {
+      top: 7px;
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle.is-open .nav-toggle-bars span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.is-open .nav-toggle-bars span:nth-child(3) {
+      top: 7px;
+      transform: rotate(-45deg);
+    }
+
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
       display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 14px 16px 10px;
-      background: linear-gradient(180deg, rgba(253, 245, 248, 0.94), rgba(252, 238, 244, 0.78));
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(180, 110, 140, 0.08);
-      scrollbar-width: none;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px 32px;
+      background: rgba(45, 22, 32, 0.35);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.35s;
     }
 
-    .top-nav::-webkit-scrollbar {
-      display: none;
+    .nav-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
-    .top-nav a {
-      flex: 0 0 auto;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-      background: rgba(255, 248, 252, 0.75);
-      border: 1px solid rgba(255, 230, 240, 0.65);
+    .nav-overlay-panel {
+      width: 100%;
+      max-width: min(360px, 100%);
+      max-height: min(78vh, 640px);
+      overflow: auto;
+      padding: 22px 18px 20px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(165deg, rgba(255, 252, 254, 0.98), rgba(252, 238, 244, 0.96));
+      box-shadow: 0 24px 60px rgba(80, 35, 55, 0.2);
+      border: 1px solid rgba(255, 235, 242, 0.9);
+      -webkit-overflow-scrolling: touch;
+      transform: translateY(12px) scale(0.98);
+      opacity: 0;
+      transition:
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-overlay.is-open .nav-overlay-panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .nav-overlay-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-overlay-list a {
+      display: block;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 230, 240, 0.7);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-overlay-list a:hover,
+    .nav-overlay-list a:focus-visible {
+      background: rgba(199, 107, 138, 0.1);
+      color: var(--point);
+      outline: none;
     }
 
     .hero {
@@ -637,7 +760,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 110;
       padding: 20px;
     }
 
@@ -696,17 +819,41 @@
   <div class="app">
     <button class="floating-audio" id="audioToggle" aria-label="배경음악 재생 버튼">♫</button>
 
-    <nav class="top-nav">
-      <a href="#main">메인</a>
-      <a href="#greeting">인사말</a>
-      <a href="#family">소개</a>
-      <a href="#schedule">달력</a>
-      <a href="#gallery">갤러리</a>
-      <a href="#location">오시는 길</a>
-      <a href="#rsvp">참석여부</a>
-      <a href="#account">계좌번호</a>
-      <a href="#ending">엔딩</a>
-    </nav>
+    <button
+      type="button"
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="navOverlay"
+    >
+      <span class="nav-toggle-bars" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+
+    <div
+      class="nav-overlay"
+      id="navOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="페이지 메뉴"
+      aria-hidden="true"
+    >
+      <nav class="nav-overlay-panel" aria-label="섹션 바로가기">
+        <ul class="nav-overlay-list">
+          <li><a href="#main">메인</a></li>
+          <li><a href="#greeting">인사말</a></li>
+          <li><a href="#family">소개</a></li>
+          <li><a href="#schedule">달력</a></li>
+          <li><a href="#gallery">갤러리</a></li>
+          <li><a href="#location">오시는 길</a></li>
+          <li><a href="#rsvp">참석여부</a></li>
+          <li><a href="#account">계좌번호</a></li>
+          <li><a href="#ending">엔딩</a></li>
+        </ul>
+      </nav>
+    </div>
 
     <section class="hero reveal" id="main">
       <div class="hero-card">
@@ -936,6 +1083,53 @@
   </audio>
 
   <script>
+    const navToggle = document.getElementById('navToggle');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function openNav() {
+      navOverlay.classList.add('is-open');
+      navToggle.classList.add('is-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+      navToggle.setAttribute('aria-label', '메뉴 닫기');
+      navOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNav() {
+      navOverlay.classList.remove('is-open');
+      navToggle.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', '메뉴 열기');
+      navOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function toggleNav() {
+      if (navOverlay.classList.contains('is-open')) closeNav();
+      else openNav();
+    }
+
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    navOverlay.addEventListener('click', (e) => {
+      if (e.target === navOverlay) closeNav();
+    });
+
+    navOverlay.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeNav();
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navOverlay.classList.contains('is-open')) {
+        closeNav();
+      }
+    });
+
     const reveals = document.querySelectorAll('.reveal');
     let lastScrollY = window.scrollY;
     let scrollDirection = 'down';
