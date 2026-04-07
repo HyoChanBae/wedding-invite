@@ -953,8 +953,8 @@
         <div class="section-label">Gallery</div>
         <h2 class="section-title">우리의 순간들</h2>
         <div class="gallery-grid" id="galleryGrid">
-          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=80" alt="gallery1" /></div>
-          <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80" alt="gallery2" /></div>
+          <div class="gallery-item"><img src="./images/first.jpg" alt="gallery1" /></div>
+          <div class="gallery-item"><img src="./images/second.png" alt="gallery2" /></div>
           <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="gallery3" /></div>
           <div class="gallery-item hidden"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=900&q=80" alt="gallery4" /></div>
           <div class="gallery-item hidden"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80" alt="gallery5" /></div>
@@ -1161,30 +1161,43 @@
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
-      scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
-      lastScrollY = currentScrollY;
+      const diff = currentScrollY - lastScrollY;
+
+      if (Math.abs(diff) >= 4) {
+        scrollDirection = diff > 0 ? 'down' : 'up';
+        lastScrollY = currentScrollY;
+      }
+
+      // 충분히 위로 지나간 섹션만 다시 숨김 처리
+      reveals.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+
+        // 섹션의 하단이 화면 위로 많이 지나간 경우만 reset
+        if (rect.bottom < -80) {
+          el.classList.remove('show');
+          el.classList.remove('instant');
+        }
+      });
     }, { passive: true });
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (scrollDirection === 'down') {
-            entry.target.classList.remove('instant');
-            requestAnimationFrame(() => {
-              entry.target.classList.add('show');
-            });
-          } else {
-            entry.target.classList.add('instant');
-            entry.target.classList.add('show');
-          }
-        } else {
-          entry.target.classList.remove('show');
+        if (!entry.isIntersecting) return;
+
+        if (scrollDirection === 'down') {
           entry.target.classList.remove('instant');
+          requestAnimationFrame(() => {
+            entry.target.classList.add('show');
+          });
+        } else {
+          // 위로 올라갈 때는 즉시 보이게
+          entry.target.classList.add('instant');
+          entry.target.classList.add('show');
         }
       });
     }, {
-      threshold: 0.14,
-      rootMargin: '0px 0px -10% 0px'
+      threshold: 0.12,
+      rootMargin: '0px 0px -8% 0px'
     });
 
     reveals.forEach((el) => observer.observe(el));
