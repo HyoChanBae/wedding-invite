@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <script>    
-      const ua = navigator.userAgent.toLowerCase();
-      if (ua.includes('kakaotalk')) {
-        const url = window.location.href;
-
-        // iOS
-        if (/iphone|ipad|ipod/.test(ua)) {
-          window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(url);
-        } 
-        // Android
-        else {
-          window.location.href = "intent://" + url.replace(/^https?:\/\//, '') + 
-            "#Intent;scheme=https;package=com.android.chrome;end";
-        }
-      }
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>모바일 청첩장</title>
