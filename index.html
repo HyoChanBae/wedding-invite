@@ -1108,6 +1108,21 @@
   </audio>
 
   <script>
+    const ua = navigator.userAgent.toLowerCase();
+
+    if (ua.includes('kakaotalk')) {
+      const url = window.location.href;
+
+      // iOS
+      if (/iphone|ipad|ipod/.test(ua)) {
+        window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(url);
+      } 
+      // Android
+      else {
+        window.location.href = "intent://" + url.replace(/^https?:\/\//, '') + 
+          "#Intent;scheme=https;package=com.android.chrome;end";
+      }
+    }
     const navToggle = document.getElementById('navToggle');
     const navOverlay = document.getElementById('navOverlay');
 
