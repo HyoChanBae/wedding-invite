@@ -495,6 +495,19 @@
       pointer-events: none;
     }
 
+    .gallery-more {
+      margin-top: 16px;
+      width: 100%;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .info-list {
       margin-top: 20px;
       display: grid;
@@ -915,11 +928,11 @@
         <div class="family-grid">
           <div class="family-box">
             <div class="family-side">신랑 측</div>
-            <div class="family-line"><strong>아들 배효찬</strong><br />아버지 배일환<br />어머니 김성희</div>
+            <div class="family-line">아버지 배일환<br />어머니 김성희<br /><strong>아들 배효찬</strong></div>
           </div>
           <div class="family-box">
             <div class="family-side">신부 측</div>
-            <div class="family-line"><strong>딸 강예지</strong><br />아버지 강동수<br />어머니 이미화</div>
+            <div class="family-line">아버지 강동수<br />어머니 이미화<br /><strong>딸 강예지</strong></div>
           </div>
         </div>
       </div>
@@ -952,13 +965,14 @@
         <div class="section-label">Gallery</div>
         <h2 class="section-title">우리의 순간들</h2>
         <div class="gallery-grid" id="galleryGrid">
-          <div class="gallery-item"><img src="./images/fourth.jpg" alt="gallery1" /></div>
+          <div class="gallery-item"><img src="./images/4899_세로.jpg" alt="gallery1" /></div>
           <div class="gallery-item"><img src="./images/second2.png" alt="gallery2" /></div>
-          <div class="gallery-item"><img src="./images/4899_세로.jpg" alt="gallery3" /></div>
-          <div class="gallery-item"><img src="./images/first.jpg" alt="gallery4" /></div>
-          <div class="gallery-item"><img src="./images/4871_세로.jpg" alt="gallery5" /></div>
-          <div class="gallery-item"><img src="./images/4855_세로.jpg" alt="gallery6" /></div>
+          <div class="gallery-item"><img src="./images/fourth.jpg" alt="gallery3" /></div>
+          <div class="gallery-item hidden"><img src="./images/first.jpg" alt="gallery4" /></div>
+          <div class="gallery-item hidden"><img src="./images/4871_세로.jpg" alt="gallery5" /></div>
+          <div class="gallery-item hidden"><img src="./images/4855_세로.jpg" alt="gallery6" /></div>
         </div>
+        <button class="gallery-more" id="galleryMore">더 보기</button>
       </div>
     </section>
 
@@ -1051,12 +1065,6 @@
             </button>
             <div class="acc-body">
               <div class="bank-card">
-                <div class="bank-role">아들</div>
-                <div class="bank-number">1002-246-996724</div>
-                <div class="bank-name">우리은행 배효찬</div>
-                <button class="copy-btn" data-copy="1002-246-996724">계좌번호 복사</button>
-              </div>
-              <div class="bank-card">
                 <div class="bank-role">신랑 아버지</div>
                 <div class="bank-number">143-910326-77307</div>
                 <div class="bank-name">하나은행 배일환</div>
@@ -1077,22 +1085,16 @@
             </button>
             <div class="acc-body">
               <div class="bank-card">
-                <div class="bank-role">딸</div>
-                <div class="bank-number">205-080937-02-015</div>
-                <div class="bank-name">기업은행 강예지</div>
-                <button class="copy-btn" data-copy="205-080937-02-015">계좌번호 복사</button>
-              </div>
-              <div class="bank-card">
                 <div class="bank-role">신부 아버지</div>
                 <div class="bank-number">110-017-351043</div>
                 <div class="bank-name">신한은행 강동수</div>
-                <button class="copy-btn" data-copy="110-017-351043">계좌번호 복사</button>
+                <button class="copy-btn" data-copy="7777-8888-9999">계좌번호 복사</button>
               </div>
               <div class="bank-card">
                 <div class="bank-role">신부 어머니</div>
                 <div class="bank-number">312201-04-224157</div>
                 <div class="bank-name">국민은행 이미화</div>
-                <button class="copy-btn" data-copy="312201-04-224157">계좌번호 복사</button>
+                <button class="copy-btn" data-copy="1234-5678-9101">계좌번호 복사</button>
               </div>
             </div>
           </div>
@@ -1211,6 +1213,18 @@
     });
 
     reveals.forEach((el) => observer.observe(el));
+
+    const moreBtn = document.getElementById('galleryMore');
+    const hiddenItems = () => [...document.querySelectorAll('.gallery-item.hidden')];
+    hiddenItems().forEach((item) => item.style.display = 'none');
+
+    moreBtn.addEventListener('click', () => {
+      hiddenItems().forEach((item) => {
+        item.style.display = 'block';
+        item.classList.remove('hidden');
+      });
+      moreBtn.style.display = 'none';
+    });
 
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
