@@ -771,6 +771,113 @@
       transition-delay: 0.58s;
     }
 
+    .location-guide-triggers {
+      margin-top: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .location-guide-line {
+      margin: 0;
+      text-align: center;
+    }
+
+    .location-guide-trigger {
+      border: 0;
+      background: none;
+      padding: 0;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--point);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      cursor: pointer;
+    }
+
+    .location-guide-trigger:hover {
+      color: #a85573;
+    }
+
+    .location-guide-trigger:focus-visible {
+      outline: 2px solid var(--point);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .location-guide-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .location-guide-modal.is-open {
+      display: flex;
+    }
+
+    .location-guide-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(45, 22, 32, 0.45);
+      backdrop-filter: blur(6px);
+    }
+
+    .location-guide-panel {
+      position: relative;
+      z-index: 1;
+      width: min(100%, var(--max));
+      max-height: min(90vh, 760px);
+      overflow: auto;
+      padding: 22px 16px 20px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .location-guide-heading {
+      margin: 0 40px 16px 6px;
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .location-guide-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .location-guide-grid img {
+      width: 100%;
+      height: auto;
+      max-height: min(52vh, 420px);
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      background: rgba(255, 246, 250, 0.65);
+      cursor: zoom-in;
+    }
+
+    .location-guide-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(120, 55, 85, 0.08);
+    }
+
     .lightbox {
       position: fixed;
       inset: 0;
@@ -980,7 +1087,20 @@
           <div class="info-item">
             <strong>주차</strong>
             <p>교회 건물 주차장 이용 가능 무료 주차 지원</p>
+            <p>지상 및 지하주차장 모두 이용가능합니다</p>
           </div>
+        </div>
+        <div class="location-guide-triggers">
+          <p class="location-guide-line">
+            <button type="button" class="location-guide-trigger" id="locationGuideOpen" aria-haspopup="dialog">
+              갈릴리홀 위치 안내
+            </button>
+          </p>
+          <p class="location-guide-line">
+            <button type="button" class="location-guide-trigger" id="parkingGuideOpen" aria-haspopup="dialog">
+              주차장 위치 안내
+            </button>
+          </p>
         </div>
         <div class="action-row">
           <a class="action-btn" href="https://naver.me/FwAiDZJv" target="_blank" rel="noopener">네이버지도</a>
@@ -1113,6 +1233,48 @@
     <img id="lightboxImage" src="" alt="확대 이미지" />
   </div>
 
+  <div
+    class="location-guide-modal"
+    id="locationGuideModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="locationGuideTitle"
+    aria-hidden="true"
+  >
+    <div class="location-guide-backdrop" id="locationGuideBackdrop"></div>
+    <div class="location-guide-panel">
+      <button type="button" class="location-guide-close" id="locationGuideClose" aria-label="위치 안내 닫기">×</button>
+      <h3 id="locationGuideTitle" class="location-guide-heading">갈릴리홀 위치 안내</h3>
+      <div class="location-guide-grid">
+        <img src="./images/안내1-1.png" alt="갈릴리홀 찾아오시는 길 안내 1" loading="lazy" />
+        <img src="./images/안내1-2.png" alt="갈릴리홀 찾아오시는 길 안내 2" loading="lazy" />
+        <img src="./images/안내1-3.png" alt="갈릴리홀 찾아오시는 길 안내 3" loading="lazy" />
+        <img src="./images/안내1-4.png" alt="갈릴리홀 찾아오시는 길 안내 4" loading="lazy" />
+        <img src="./images/안내1-5.png" alt="갈릴리홀 찾아오시는 길 안내 5" loading="lazy" />
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="location-guide-modal"
+    id="parkingGuideModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="parkingGuideTitle"
+    aria-hidden="true"
+  >
+    <div class="location-guide-backdrop" id="parkingGuideBackdrop"></div>
+    <div class="location-guide-panel">
+      <button type="button" class="location-guide-close" id="parkingGuideClose" aria-label="주차장 안내 닫기">×</button>
+      <h3 id="parkingGuideTitle" class="location-guide-heading">주차장 위치 안내</h3>
+      <div class="location-guide-grid">
+        <img src="./images/안내2-1.png" alt="갈릴리홀 찾아오시는 길 안내 1" loading="lazy" />
+        <img src="./images/안내2-2.png" alt="갈릴리홀 찾아오시는 길 안내 2" loading="lazy" />
+        <img src="./images/안내2-3.png" alt="갈릴리홀 찾아오시는 길 안내 3" loading="lazy" />
+      </div>
+    </div>
+  </div>
+
   <audio id="bgm" loop>
     <source src="" type="audio/mpeg" />
   </audio>
@@ -1159,8 +1321,60 @@
       });
     });
 
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    const locationGuideModal = document.getElementById('locationGuideModal');
+    const locationGuideOpen = document.getElementById('locationGuideOpen');
+    const locationGuideClose = document.getElementById('locationGuideClose');
+    const locationGuideBackdrop = document.getElementById('locationGuideBackdrop');
+
+    const parkingGuideModal = document.getElementById('parkingGuideModal');
+    const parkingGuideOpen = document.getElementById('parkingGuideOpen');
+    const parkingGuideClose = document.getElementById('parkingGuideClose');
+    const parkingGuideBackdrop = document.getElementById('parkingGuideBackdrop');
+
+    function openGuideModal(modalEl) {
+      modalEl.classList.add('is-open');
+      modalEl.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeGuideModal(modalEl) {
+      modalEl.classList.remove('is-open');
+      modalEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    locationGuideOpen.addEventListener('click', () => openGuideModal(locationGuideModal));
+    locationGuideClose.addEventListener('click', () => closeGuideModal(locationGuideModal));
+    locationGuideBackdrop.addEventListener('click', () => closeGuideModal(locationGuideModal));
+
+    parkingGuideOpen.addEventListener('click', () => openGuideModal(parkingGuideModal));
+    parkingGuideClose.addEventListener('click', () => closeGuideModal(parkingGuideModal));
+    parkingGuideBackdrop.addEventListener('click', () => closeGuideModal(parkingGuideModal));
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.style.zIndex = '';
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navOverlay.classList.contains('is-open')) {
+      if (e.key !== 'Escape') return;
+      if (lightbox.classList.contains('open')) {
+        closeLightbox();
+        return;
+      }
+      if (locationGuideModal.classList.contains('is-open')) {
+        closeGuideModal(locationGuideModal);
+        return;
+      }
+      if (parkingGuideModal.classList.contains('is-open')) {
+        closeGuideModal(parkingGuideModal);
+        return;
+      }
+      if (navOverlay.classList.contains('is-open')) {
         closeNav();
       }
     });
@@ -1212,20 +1426,27 @@
 
     reveals.forEach((el) => observer.observe(el));
 
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxClose = document.getElementById('lightboxClose');
-
     document.querySelectorAll('.gallery-item img').forEach((img) => {
       img.addEventListener('click', () => {
         lightboxImage.src = img.src;
+        lightboxImage.alt = img.alt || '확대 이미지';
+        lightbox.style.zIndex = '';
         lightbox.classList.add('open');
       });
     });
 
-    lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
+    document.querySelectorAll('.location-guide-grid img').forEach((img) => {
+      img.addEventListener('click', () => {
+        lightboxImage.src = img.src;
+        lightboxImage.alt = img.alt || '위치 안내 이미지';
+        lightbox.style.zIndex = '130';
+        lightbox.classList.add('open');
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) lightbox.classList.remove('open');
+      if (e.target === lightbox) closeLightbox();
     });
 
     document.querySelectorAll('.acc-head').forEach((btn) => {
